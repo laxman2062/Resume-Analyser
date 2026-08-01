@@ -1,7 +1,10 @@
 import OpenAI from "openai";
 import { AnalysisResult } from "../types/analysis.types";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+const groq = new OpenAI({
+  apiKey: process.env.GROQ_API_KEY!,
+  baseURL: "https://api.groq.com/openai/v1",
+});
 
 export const analyzeResumeAgainstJD = async (
   resumeText: string,
@@ -30,8 +33,8 @@ JOB DESCRIPTION:
 ${jdText}
 `;
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+  const response = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
     messages: [{ role: "user", content: prompt }],
     temperature: 0.3,
   });

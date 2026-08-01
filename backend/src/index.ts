@@ -5,6 +5,7 @@ import { supabase } from "./config/supabase";
 import authRoutes from "./routes/auth.routes";
 import resumeRoutes from "./routes/resume.routes";
 import analysisRoutes from "./routes/analysis.routes";
+import historyRoutes from "./routes/history.routes";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/analyses", analysisRoutes);
+app.use("/api/users", historyRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

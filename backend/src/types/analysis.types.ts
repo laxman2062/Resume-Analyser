@@ -17,3 +17,11 @@ export interface AnalysisResult {
   overall_score: number;
   feedback: AnalysisFeedback;
 }
+export interface RewriteResult {
+  rewritten_resume: string;
+  changes_made: string[];
+}
+
+export interface CoverLetterResult {
+  cover_letter: string;
+}

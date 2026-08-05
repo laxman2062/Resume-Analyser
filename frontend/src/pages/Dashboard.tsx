@@ -44,7 +44,7 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-2xl">
+      <div className="max-l-5xl min-h-[calc(100vh-8rem)] flex flex-col justify-center">
         <div className="w-10 h-[3px] bg-accent rounded-full mb-6" />
         <h1 className="font-display text-3xl text-text-primary mb-2">
           Hey {user?.name?.split(" ")[0]} 👋

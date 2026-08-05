@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Sparkles, Loader2, TrendingUp, AlertCircle, CheckCircle2 } from "lucide-react";
 import { DashboardLayout } from "../components/DashboardLayout";
 import { analyzeResume } from "../services/resume.service";
+import { getHistory } from "../services/resume.service";
 
 interface AnalysisFeedback {
   missing_keywords: string[];
@@ -45,6 +46,37 @@ export default function AnalyzePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
+
+  useEffect(() => {
+  const loadPreviousAnalysis = async () => {
+    try {
+      const data = await getHistory();
+      const currentResume = data.history.find((r: any) => r.id === resumeId);
+
+      if (currentResume && currentResume.analyses.length > 0) {
+        // Get the most recent analysis (already sorted, but sort defensively)
+        const latest = [...currentResume.analyses].sort(
+          (a: any, b: any) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )[0];
+
+        setJdText(latest.jd_text);
+        setAnalysis({
+          ats_score: latest.ats_score,
+          grammar_score: latest.grammar_score,
+          keyword_score: latest.keyword_score,
+          overall_score: latest.overall_score,
+          feedback: latest.feedback,
+        });
+      }
+    } catch (err) {
+      // Silent fail is fine here - just means they start with a blank form
+      console.error("Failed to load previous analysis", err);
+    }
+  };
+
+  loadPreviousAnalysis();
+}, [resumeId]);
 
   const handleAnalyze = async () => {
     if (!jdText.trim()) {

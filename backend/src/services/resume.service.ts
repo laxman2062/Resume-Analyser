@@ -45,3 +45,30 @@ export const uploadResume = async (
 };
 
 // upload to supabase and save the record
+
+
+export const deleteResume = async (userId: string, resumeId: string) => {
+  // Confirm ownership first
+  const { data: resume, error: fetchError } = await supabase
+    .from("resumes")
+    .select("id, user_id, file_url")
+    .eq("id", resumeId)
+    .single();
+
+  if (fetchError || !resume) throw new Error("Resume not found");
+  if (resume.user_id !== userId) throw new Error("Not authorized to delete this resume");
+
+  // Delete associated analyses first (foreign key safety, though CASCADE should handle it)
+  await supabase.from("analyses").delete().eq("resume_id", resumeId);
+
+  // Delete the resume record
+  const { error: deleteError } = await supabase
+    .from("resumes")
+    .delete()
+    .eq("id", resumeId);
+
+  if (deleteError) throw new Error(deleteError.message);
+
+  return { message: "Resume deleted successfully" };
+};
+

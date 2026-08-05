@@ -19,3 +19,8 @@ export const analyzeResume = async (resumeId: string, jdText: string) => {
   const res = await api.post("/analyses/analyze", { resumeId, jdText });
   return res.data; // { message, analysis }
 };
+
+export const deleteResume = async (resumeId: string) => {
+  const res = await api.delete(`/resumes/${resumeId}`);
+  return res.data;
+};

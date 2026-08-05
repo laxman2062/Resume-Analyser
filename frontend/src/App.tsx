@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AnalyzePage from "./pages/AnalyzePage";
+import HistoryPage from "./pages/HistoryPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
@@ -18,12 +19,21 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           }
+          
         />
         <Route
           path="/dashboard/analyze/:resumeId"
           element={
             <ProtectedRoute>
               <AnalyzePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/history"
+          element={
+            <ProtectedRoute>
+              <HistoryPage />
             </ProtectedRoute>
           }
         />
